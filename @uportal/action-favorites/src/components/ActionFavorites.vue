@@ -8,9 +8,9 @@
 <script>
 import oidc from "@uportal/open-id-connect";
 import i18n from "../i18n.js";
-import Icon from "vue-awesome/components/Icon";
-import "vue-awesome/icons/star";
-import "vue-awesome/icons/star-o";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faStar as fasFaStar } from "@fortawesome/fontawesome-free-solid";
+import { faStar as farFaStar } from "@fortawesome/fontawesome-free-regular";
 
 const checkStatus = function(response) {
   console.log("check response ", response);
@@ -31,7 +31,7 @@ const parseJSON = function(response) {
 export default {
   name: "ActionFavorites",
   props: {
-    fname: { type: String, required: true },
+    fname: String,
     chanId: { type: String, required: true },
     isFavorite: { type: Boolean, default: false },
     favoriteApiUrl: { type: String, default: "/uPortal/api/layout" },
@@ -39,11 +39,12 @@ export default {
   },
   data() {
     return {
-      favorite: this.isFavorite
+      favorite: this.isFavorite,
+      icon: this.favorite ? fasFaStar : farFaStar
     };
   },
   components: {
-    Icon
+    FontAwesomeIcon
   },
   methods: {
     translate: function(text, lang) {
@@ -59,7 +60,7 @@ export default {
       }
       return false;
     },
-    changeFavoriteValue: function() {
+    changeFavoriteValue: function(event) {
       this.favorite = !this.favorite;
       this.$emit("is-favorite", this.favorite);
       if (typeof this.callOnToggleFav === "function") {
@@ -131,14 +132,5 @@ export default {
 }
 .favorite-button:hover {
   transform: scale(1.3, 1.3);
-}
-.fa-icon {
-  width: auto;
-  height: 2em; /* or any other relative font sizes */
-  color: #b7b7b7;
-
-  /* You would have to include the following two lines to make this work in Safari */
-  max-width: 100%;
-  max-height: 100%;
 }
 </style>
